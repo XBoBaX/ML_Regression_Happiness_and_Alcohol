@@ -7,16 +7,17 @@ import numpy as np
 
 def upload_file(request, url):
     if url == "":
-        myfile = request.FILES['myfile']
+        my_file = request.FILES['my_file']
         fs = FileSystemStorage()
-        filename = fs.save(myfile.name, myfile)
+        filename = fs.save(my_file.name, my_file)
         uploaded_file_url = fs.url(filename)
     else:
         filename = url.split('/')[2]
         uploaded_file_url = url
+
     country, happiness_score, beer_per_capita = read_dataset(request, filename)
-    mylist = zip(country, happiness_score, beer_per_capita)
-    return {"uploaded_file_url": uploaded_file_url, 'mylist': mylist}
+    my_list = zip(country, happiness_score, beer_per_capita)
+    return {"uploaded_file_url": uploaded_file_url, 'my_list': my_list}
 
 
 def read_dataset(request, url_file):
