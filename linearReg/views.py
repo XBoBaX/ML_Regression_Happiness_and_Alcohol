@@ -6,6 +6,8 @@ def open_main(request):
     json = {}
     if request.method == 'POST' and request.POST.get('id_edit') is not None:
         json = edit_table(request)
+    elif request.method == 'POST' and request.POST.get('sort') is not None:
+        json = upload_file(request, request.POST.get('sort'))
     elif request.method == 'POST' and request.FILES['my_file']:
         json = upload_file(request, "")
 

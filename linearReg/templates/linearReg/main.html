@@ -69,8 +69,18 @@
                         <button class="btn_main wd100" type="submit">Изменить запись</button>
                     </div>
                 </form>
+
+                    <form method="post" name="sort_list">
+                    {% csrf_token %}
+                        <input hidden value="{{ uploaded_file_url }}" name="sort">
+                        <div class="row padLR10 padU30">
+                            <button class="btn_main wd100" type="submit">Сортировать по странам</button>
+                        </div>
+                    </form>
+
             </div>
         </div>
+
     </div>
 </body>
 </html>
