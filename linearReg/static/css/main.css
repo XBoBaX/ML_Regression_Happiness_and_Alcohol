@@ -32,3 +32,22 @@ div.pt20{
 .tabRFirst{
     font-weight: 700;
 }
+.tabCSV{
+    max-height: 500px;
+    overflow: auto;
+    border: 1px solid silver;
+}
+
+.wd100{
+    width: 100%;
+}
+.padLR10{
+    padding-left: 10px;
+    padding-right: 10px;
+}
+.pdl10{
+    padding-left: 10px;
+}
+.padD15{
+    padding-bottom: 15px;
+}

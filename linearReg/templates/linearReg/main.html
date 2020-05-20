@@ -33,23 +33,43 @@
             </div>
         </div>
         <div class="row pt20">
-            <div class="col-8">
+            <div class="col-8 tabCSV">
                 <div class="row tabR tabRFirst">
-                    <div class="col-3">id</div>
+                    <div class="col-1">id</div>
                     <div class="col-3">Country</div>
                     <div class="col-3">Happines Level</div>
                     <div class="col-3">Beer PerCapita</div>
                 </div>
                 {% for country, hap, beer_per_capita in mylist %}
-                <div class="row tabR">
-                    <div class="col-3">{{ forloop.counter0 }}</div>
+                <div class="row tabR ">
+                    <div class="col-1">{{ forloop.counter0 }}</div>
                     <div class="col-3">{{ country }}</div>
                     <div class="col-3">{{ hap }}</div>
                     <div class="col-3">{{ beer_per_capita }}</div>
                 </div>
                 {% endfor %}
             </div>
-
+            <div class="col-3">
+                <form method="post" name="edit_table">
+                {% csrf_token %}
+                    <input hidden value="{{ uploaded_file_url }}" name="filename">
+                    <div class="row padLR10 padD15">
+                        <input type="text" class="wd100 pdl10" name="id_edit" placeholder="Input id for edit">
+                    </div>
+                    <div class="row padLR10 padD15">
+                        <input type="text" class="wd100 pdl10" name="country_edit" placeholder="Inout Country name">
+                    </div>
+                    <div class="row padLR10 padD15">
+                        <input type="text" class="wd100 pdl10" name="Happy_edit" placeholder="Inout Happines level">
+                    </div>
+                    <div class="row padLR10 padD15">
+                        <input type="text" class="wd100 pdl10" name="Beer_edit" placeholder="Inout Beer Per Capita">
+                    </div>
+                    <div class="row padLR10">
+                        <button class="btn_main wd100" type="submit">Изменить запись</button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 </body>

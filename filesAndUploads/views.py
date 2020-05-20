@@ -5,11 +5,15 @@ import pandas as pd
 import numpy as np
 
 
-def upload_file(request):
-    myfile = request.FILES['myfile']
-    fs = FileSystemStorage()
-    filename = fs.save(myfile.name, myfile)
-    uploaded_file_url = fs.url(filename)
+def upload_file(request, url):
+    if url == "":
+        myfile = request.FILES['myfile']
+        fs = FileSystemStorage()
+        filename = fs.save(myfile.name, myfile)
+        uploaded_file_url = fs.url(filename)
+    else:
+        filename = url.split('/')[2]
+        uploaded_file_url = url
     country, happiness_score, beer_per_capita = read_dataset(request, filename)
     mylist = zip(country, happiness_score, beer_per_capita)
     return {"uploaded_file_url": uploaded_file_url, 'mylist': mylist}
