@@ -26,7 +26,7 @@
                 <div class="row">
                     <form method="post" enctype="multipart/form-data">
                         {% csrf_token %}
-                        <input type="file" name="myfile">
+                        <input type="file" name="my_file">
                         <button class="btn_main" type="submit">Загрузить csv-файл</button>
                     </form>
                 </div>
@@ -40,7 +40,7 @@
                     <div class="col-3">Happines Level</div>
                     <div class="col-3">Beer PerCapita</div>
                 </div>
-                {% for country, hap, beer_per_capita in mylist %}
+                {% for country, hap, beer_per_capita in my_list %}
                 <div class="row tabR ">
                     <div class="col-1">{{ forloop.counter0 }}</div>
                     <div class="col-3">{{ country }}</div>
