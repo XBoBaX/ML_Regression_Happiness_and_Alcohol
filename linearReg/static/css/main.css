@@ -1,0 +1,21 @@
+body {
+    padding: 15px;
+}
+
+.lp5 {
+    padding-left: 5px;
+}
+
+button.btn_main{
+    padding: 7px 13px;
+    border-radius: 20px;
+    border: 1px solid #DFE1E5;
+    cursor: pointer;
+    background-color: white;
+}
+button.btn_main:hover{
+    background-color: #f0f0f0;
+}
+.alItCen{
+    align-items: center;
+}
