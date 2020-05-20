@@ -8,4 +8,5 @@ def upload_file(request):
     fs = FileSystemStorage()
     filename = fs.save(myfile.name, myfile)
     uploaded_file_url = fs.url(filename)
-    return render(request, 'linearReg/main.html', {"main": "dataset", 'uploaded_file_url': uploaded_file_url})
+    print(uploaded_file_url)
+    return render(request, 'linearReg/main.html', {"page": "dataset1", 'uploaded_file_url': uploaded_file_url})
