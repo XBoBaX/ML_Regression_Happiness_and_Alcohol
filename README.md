@@ -1,0 +1,1 @@
+This is a training project whose goal is to create an application with minimal machine learning algorithms
