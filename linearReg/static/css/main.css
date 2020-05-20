@@ -19,3 +19,16 @@ button.btn_main:hover{
 .alItCen{
     align-items: center;
 }
+div.pt20{
+    padding-top: 20px;
+}
+.tabR{
+    border: 1px solid #ebebeb;
+    border-right: 0;
+    border-left: 0;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+.tabRFirst{
+    font-weight: 700;
+}

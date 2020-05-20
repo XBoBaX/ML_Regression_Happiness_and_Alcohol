@@ -32,6 +32,25 @@
                 </div>
             </div>
         </div>
+        <div class="row pt20">
+            <div class="col-8">
+                <div class="row tabR tabRFirst">
+                    <div class="col-3">id</div>
+                    <div class="col-3">Country</div>
+                    <div class="col-3">Happines Level</div>
+                    <div class="col-3">Beer PerCapita</div>
+                </div>
+                {% for country, hap, beer_per_capita in mylist %}
+                <div class="row tabR">
+                    <div class="col-3">{{ forloop.counter0 }}</div>
+                    <div class="col-3">{{ country }}</div>
+                    <div class="col-3">{{ hap }}</div>
+                    <div class="col-3">{{ beer_per_capita }}</div>
+                </div>
+                {% endfor %}
+            </div>
+
+        </div>
     </div>
 </body>
 </html>
