@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from filesAndUploads.views import upload_file, read_dataset
-
+import numpy as np
 
 def open_main(request):
     print(request.session.get("file"))
@@ -22,15 +22,31 @@ def open_main(request):
         try:
             country, happiness_score, beer_per_capita = read_dataset(request, filename)
             my_list = zip(country, happiness_score, beer_per_capita)
+            json_req.update(statistics_to_JSON(country, happiness_score, beer_per_capita))
+            print(json_req)
             json_req["my_list"] = my_list
         except Exception:
+            print(Exception)
             request.session["uploaded_file_url"] = "None"
-    
+
     request.session["file"] = json_req["uploaded_file_url"]
     request.session["start"] = "yes"
 
     json_req["page"] = "dataset"
     return render(request, 'linearReg/main.html', json_req)
+
+
+def statistics_to_JSON(country, happiness_score, beer_per_capita):
+    json_req = {}
+    json_req["count_counrt"] = country.size
+    json_req["min_HL"] = min(happiness_score)
+    json_req["max_HL"] = max(happiness_score)
+    json_req["avg_HL"] = round(np.average(happiness_score))
+    json_req["min_Beer"] = round(min(beer_per_capita))
+    json_req["max_Beer"] = round(max(beer_per_capita))
+    json_req["avg_Beer"] = round(np.average(beer_per_capita))
+    return json_req
+
 
 
 def edit_table(request):

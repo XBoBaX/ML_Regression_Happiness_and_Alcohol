@@ -54,3 +54,13 @@ div.pt20{
 .padU30{
     padding-top: 30px;
 }
+.marT20{
+    margin-top: 20px;
+}
+.tabSecond{
+    font-weight: normal;
+    padding-top: 10px;
+}
+.marT20.padL0{
+    padding-left: 0;
+}
