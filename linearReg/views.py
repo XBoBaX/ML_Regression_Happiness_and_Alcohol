@@ -1,13 +1,36 @@
 from django.shortcuts import render
 from filesAndUploads.views import upload_file, read_dataset
 import numpy as np
+import matplotlib.pyplot as plt
+from django.conf import settings
+
+def computecost(x, y, theta, m):
+    a = 1 / (2 * m)
+    b = np.sum(((x @ theta) - y) ** 2)
+    j = (a) * (b)
+    return j
+
+
+def gradient(x, y, theta, m):
+    alpha = 0.00001
+    iteration = 2000
+    # gradient descend algorithm
+    J_history = np.zeros([iteration, 1]);
+    for iter in range(0, 2000):
+        error = (x @ theta) - y
+        temp0 = theta[0] - ((alpha / m) * np.sum(error * x[:, 0]))
+        temp1 = theta[1] - ((alpha / m) * np.sum(error * x[:, 1]))
+        theta = np.array([temp0, temp1]).reshape(2, 1)
+        J_history[iter] = (1 / (2 * m)) * (np.sum(((x @ theta) - y) ** 2))  # compute J value for each iteration
+    return theta, J_history
+
 
 def open_main(request):
     print(request.session.get("file"))
     json_req = {}
 
     # Session started
-    if request.session.get("start", "yes"):
+    if request.session.get("start") != "yes":
         json_req["uploaded_file_url"] = "None"
 
     if request.method == 'POST' and request.POST.get('id_edit') is not None:
@@ -19,12 +42,19 @@ def open_main(request):
     elif request.session.get("start") != "None":
         json_req["uploaded_file_url"] = request.session.get("file")
         filename = json_req["uploaded_file_url"].split('/')[2]
+        country, happiness_score, beer_per_capita = read_dataset(request, filename)
+        json_req.update(statistics_to_JSON(country, happiness_score, beer_per_capita))
+
+
+        #DELTE 2 rows leter
+        country, happiness_score, beer_per_capita = read_dataset(request, filename)
+        json_req.update(line_reg(happiness_score, beer_per_capita, request))
         try:
             country, happiness_score, beer_per_capita = read_dataset(request, filename)
             my_list = zip(country, happiness_score, beer_per_capita)
             json_req.update(statistics_to_JSON(country, happiness_score, beer_per_capita))
-            print(json_req)
             json_req["my_list"] = my_list
+            # line_reg(happiness_score,beer_per_capita)
         except Exception:
             print(Exception)
             request.session["uploaded_file_url"] = "None"
@@ -45,8 +75,50 @@ def statistics_to_JSON(country, happiness_score, beer_per_capita):
     json_req["min_Beer"] = round(min(beer_per_capita))
     json_req["max_Beer"] = round(max(beer_per_capita))
     json_req["avg_Beer"] = round(np.average(beer_per_capita))
+    json_req["median_HL"] = np.median(happiness_score)
     return json_req
 
+
+def line_reg(HL, BR, request):
+    json_ret = {}
+    X = HL
+    y = BR
+
+    X = X / (np.max(X))
+    plt.plot(X, y, 'bo')
+    plt.ylabel('Happiness Score')
+    plt.xlabel('Alcohol consumption')
+    plt.legend(['Happiness Score'])
+    plt.title('Alcohol_Vs_Happiness')
+    plt.grid()
+    plt.savefig(settings.MEDIA_ROOT + '/temp.png')
+
+    json_ret["graph1"] = 'temp.png'
+
+    m = np.size(y)
+    X = X.reshape([122, 1])
+    x = np.hstack([np.ones_like(X), X])
+    theta = np.zeros([2, 1])
+    theta, J = gradient(x, y, theta, m)
+
+    plt.plot(X, y, 'bo')
+    plt.plot(X, x @ theta, '-')
+    plt.axis([0, 1, 3, 7])
+    plt.ylabel('Happiness Score')
+    plt.xlabel('Alcohol consumption')
+    plt.legend(['HAPPY', 'LinearFit'])
+    plt.title('Alcohol_Vs_Happiness')
+    plt.grid()
+
+    plt.savefig(settings.MEDIA_ROOT + '/temp2.png')
+
+    json_ret["graph2"] = 'temp2.png'
+
+    predict1 = [1, (164 / np.max(HL))] @ theta
+    json_ret["pred1"] = predict1
+
+    return json_ret
+    # return graph_div
 
 
 def edit_table(request):

@@ -1,0 +1,24 @@
+{% load static %}
+<div class="row marT20 wid100">
+    <div class="col-12"><h5>Select ML algorithm</h5></div>
+    <div class="col-12">
+        <select id="ML_alg">
+            <option>Line Regression</option>
+            <option>Logic Regression</option>
+        </select>
+    </div>
+</div>
+<div class="row wd100">
+    <div class="col-12 marT20 "><h4>Line Regression</h4></div>
+    <div class="col-6">
+        <img src="media/{{ graph1 }}" alt="My image">
+    </div>
+    <div class="col-6">
+        <img src="media/{{ graph2 }}" alt="My image">
+    </div>
+</div>
+<div class="row wd100">
+    <div class="col-4 offset-4">
+        <h5>Predict for new input value: {{ pred1 }}</h5>
+    </div>
+</div>

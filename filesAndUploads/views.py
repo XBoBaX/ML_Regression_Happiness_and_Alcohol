@@ -31,3 +31,4 @@ def read_dataset(request, url_file):
     happiness_score = matrix[:, 0]
     beer_per_capita = matrix[:, 1]
     return country, happiness_score, beer_per_capita
+
