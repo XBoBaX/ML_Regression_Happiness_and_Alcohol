@@ -1,18 +1,36 @@
 from django.shortcuts import render
-from filesAndUploads.views import upload_file
+from filesAndUploads.views import upload_file, read_dataset
 
 
 def open_main(request):
-    json = {}
-    if request.method == 'POST' and request.POST.get('id_edit') is not None:
-        json = edit_table(request)
-    elif request.method == 'POST' and request.POST.get('sort') is not None:
-        json = upload_file(request, request.POST.get('sort'))
-    elif request.method == 'POST' and request.FILES['my_file']:
-        json = upload_file(request, "")
+    print(request.session.get("file"))
+    json_req = {}
 
-    json["page"] = "dataset"
-    return render(request, 'linearReg/main.html', json)
+    # Session started
+    if request.session.get("start", "yes"):
+        json_req["uploaded_file_url"] = "None"
+
+    if request.method == 'POST' and request.POST.get('id_edit') is not None:
+        json_req = edit_table(request)
+    elif request.method == 'POST' and request.POST.get('sort') is not None:
+        json_req = upload_file(request, request.POST.get('sort'))
+    elif request.method == 'POST' and request.FILES['my_file']:
+        json_req = upload_file(request, "")
+    elif request.session.get("start") != "None":
+        json_req["uploaded_file_url"] = request.session.get("file")
+        filename = json_req["uploaded_file_url"].split('/')[2]
+        try:
+            country, happiness_score, beer_per_capita = read_dataset(request, filename)
+            my_list = zip(country, happiness_score, beer_per_capita)
+            json_req["my_list"] = my_list
+        except Exception:
+            request.session["uploaded_file_url"] = "None"
+    
+    request.session["file"] = json_req["uploaded_file_url"]
+    request.session["start"] = "yes"
+
+    json_req["page"] = "dataset"
+    return render(request, 'linearReg/main.html', json_req)
 
 
 def edit_table(request):
@@ -34,4 +52,4 @@ def edit_table(request):
     one_in_list = (country, hap, beer)
     my_list[int(request.POST.get('id_edit'))] = one_in_list
     json["my_list"] = my_list
-    return request
+    return json
