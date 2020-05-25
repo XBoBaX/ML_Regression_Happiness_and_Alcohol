@@ -116,6 +116,7 @@ def line_reg(HL, BR, request):
     plt.legend(['Happiness Score'])
     plt.title('Alcohol_Vs_Happiness')
     plt.grid()
+    # plt.show()
     plt.savefig(settings.MEDIA_ROOT + '/temp.png')
 
     json_ret["graph1"] = 'temp.png'
