@@ -3,6 +3,22 @@ from filesAndUploads.views import upload_file, read_dataset
 import numpy as np
 import matplotlib.pyplot as plt
 from django.conf import settings
+from sklearn.metrics import mean_squared_error
+from math import sqrt
+
+
+def mse_calc(request, prediction):
+    expected = [5]
+    ar = [prediction]
+    predictions = ar[0]
+    mse = mean_squared_error(expected, predictions)
+    return mse
+
+
+def mrse_calc(request, prediction):
+    rmse = sqrt(mse(request, prediction))
+    return mse
+
 
 def computecost(x, y, theta, m):
     a = 1 / (2 * m)
@@ -118,7 +134,6 @@ def line_reg(HL, BR, request):
     json_ret["pred1"] = predict1
 
     return json_ret
-    # return graph_div
 
 
 def edit_table(request):
