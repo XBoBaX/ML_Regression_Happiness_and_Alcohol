@@ -67,3 +67,6 @@ div.pt20{
 .wid100{
     width: 100%;
 }
+#elem2{
+    visibility: hidden;
+}

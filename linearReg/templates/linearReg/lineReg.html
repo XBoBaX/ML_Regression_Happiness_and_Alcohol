@@ -28,7 +28,7 @@
     <div class="row marT20 wid100">
         <div class="col-12"><h5>selection of model QA metrics</h5></div>
         <div class="col-2">
-            <select id="ML_QA" class="wid100">
+            <select id="ML_QA" class="wid100" onchange="selected()">
                 <option>MSE (Root mean square error)</option>
                 <option>MRSE (Standard error)</option>
             </select>
@@ -44,6 +44,6 @@
 </form>
 <div class="row marT20 wid100">
     <div class="col-12"><h5>fault</h5></div>
-    <div class="col-2 hidden">{{ mse_value }}</div>
-    <div class="col-2 ">{{ mrse_value }}</div>
+    <div class="col-2" id="elem1">{{ mse_value }}</div>
+    <div class="col-2 " id="elem2">{{ mrse_value }}</div>
 </div>
