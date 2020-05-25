@@ -23,12 +23,27 @@
     </div>
 </div>
 
-<div class="row marT20 wid100">
-    <div class="col-12"><h5>selection of model QA metrics</h5></div>
-    <div class="col-12">
-        <select id="ML_QA">
-            <option>MSE (Root mean square error)</option>
-            <option>MRSE (Standard error)</option>
-        </select>
+<form method="post" name="actual_value">
+{% csrf_token %}
+    <div class="row marT20 wid100">
+        <div class="col-12"><h5>selection of model QA metrics</h5></div>
+        <div class="col-2">
+            <select id="ML_QA" class="wid100">
+                <option>MSE (Root mean square error)</option>
+                <option>MRSE (Standard error)</option>
+            </select>
+        </div>
+        <div class="col-3">
+            <input id="actual_value" placeholder="Input new actual value" name="actual_value" class="wid100">
+            <input name="expected_value" type="hidden" value="{{ pred1 }}">
+        </div>
+        <div class="col-3">
+            <button class="btn_main wd100" type="submit">Посчитать погрешность</button>
+        </div>
     </div>
+</form>
+<div class="row marT20 wid100">
+    <div class="col-12"><h5>fault</h5></div>
+    <div class="col-2 hidden">{{ mse_value }}</div>
+    <div class="col-2 ">{{ mrse_value }}</div>
 </div>

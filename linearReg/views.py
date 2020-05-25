@@ -7,17 +7,18 @@ from sklearn.metrics import mean_squared_error
 from math import sqrt
 
 
-def mse_calc(request, prediction):
-    expected = [5]
-    ar = [prediction]
-    predictions = ar[0]
+def mse_calc(actual, prediction):
+    expected = [actual]
+    predictions = [prediction]
+    print(expected, predictions)
+
     mse = mean_squared_error(expected, predictions)
     return mse
 
 
-def mrse_calc(request, prediction):
-    rmse = sqrt(mse(request, prediction))
-    return mse
+def mrse_calc(actual, prediction):
+    rmse = sqrt(mse_calc(actual, prediction))
+    return rmse
 
 
 def computecost(x, y, theta, m):
@@ -44,6 +45,7 @@ def gradient(x, y, theta, m):
 def open_main(request):
     print(request.session.get("file"))
     json_req = {}
+    flag_file_get = False
 
     # Session started
     if request.session.get("start") != "yes":
@@ -51,11 +53,18 @@ def open_main(request):
 
     if request.method == 'POST' and request.POST.get('id_edit') is not None:
         json_req = edit_table(request)
+    elif request.method == 'POST' and request.POST.get('actual_value') is not None:
+        arg1 = float(request.POST.get('actual_value'))
+        arg2 = request.POST.get('expected_value')
+        arg2 = float(arg2.replace('[', '').replace(']', ''))
+        json_req["mse_value"] = mse_calc(arg1, arg2)
+        json_req["mrse_value"] = mrse_calc(arg1, arg2)
+        flag_file_get = True
     elif request.method == 'POST' and request.POST.get('sort') is not None:
         json_req = upload_file(request, request.POST.get('sort'))
     elif request.method == 'POST' and request.FILES['my_file']:
         json_req = upload_file(request, "")
-    elif request.session.get("start") != "None":
+    if request.session.get("start") != "None" or flag_file_get == True:
         json_req["uploaded_file_url"] = request.session.get("file")
         filename = json_req["uploaded_file_url"].split('/')[2]
         country, happiness_score, beer_per_capita = read_dataset(request, filename)
